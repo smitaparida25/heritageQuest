@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
+import { saveAuth } from "../utils/auth";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ const Signup = () => {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("user", JSON.stringify(data.user));
+        saveAuth(data.token, data.user);
         navigate("/");
       } else {
         setError(data.message || "Registration failed");

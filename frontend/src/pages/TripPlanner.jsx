@@ -1,34 +1,72 @@
 import { useState } from "react";
 import "./TripPlanner.css";
+import { getAuth } from "../utils/auth";
 
 const TripPlanner = () => {
   const [formData, setFormData] = useState({
     destination: "",
     budget: "",
     duration: "",
+    travelers: "",
+    interests: "",
+    pace: "balanced",
   });
   const [itinerary, setItinerary] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [warning, setWarning] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setItinerary({
-      destination: formData.destination,
-      budget: formData.budget,
-      duration: formData.duration,
-      day1: ["Visit main attraction", "Lunch at local restaurant", "Explore local market"],
-      day2: ["Heritage site visit", "Cultural experience", "Dinner with local cuisine"],
-    });
+    setError("");
+    setWarning("");
+    setItinerary(null);
+    setLoading(true);
+
+    try {
+      const auth = getAuth();
+
+      if (!auth?.token) {
+        setError("Please login first to generate an AI itinerary.");
+        return;
+      }
+
+      const response = await fetch("http://localhost:5000/api/trip/plan", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.token}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Unable to generate itinerary right now.");
+        return;
+      }
+
+      setItinerary(data.itinerary);
+      setWarning(data.warning || "");
+    } catch {
+      setError("Server error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="trip-planner">
       <div className="page-header">
         <h1>Trip Planner</h1>
-        <p>Tell us your destination and budget, and we'll create a personalized itinerary for you</p>
+        <p>
+          Tell us your destination and budget, and our AI will create a personalized itinerary for you
+        </p>
       </div>
 
       <div className="planner-content">
@@ -46,7 +84,7 @@ const TripPlanner = () => {
               />
             </div>
             <div className="form-group">
-              <label>Budget (₹)</label>
+              <label>Budget (INR)</label>
               <input
                 type="number"
                 name="budget"
@@ -67,35 +105,104 @@ const TripPlanner = () => {
                 required
               />
             </div>
-            <button type="submit" className="generate-btn">
-              Generate Itinerary
+            <div className="form-group">
+              <label>Number of Travelers</label>
+              <input
+                type="text"
+                name="travelers"
+                placeholder="e.g., 2 adults"
+                value={formData.travelers}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label>Interests</label>
+              <input
+                type="text"
+                name="interests"
+                placeholder="e.g., heritage, food, nature"
+                value={formData.interests}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label>Travel Pace</label>
+              <select name="pace" value={formData.pace} onChange={handleChange}>
+                <option value="relaxed">Relaxed</option>
+                <option value="balanced">Balanced</option>
+                <option value="packed">Packed</option>
+              </select>
+            </div>
+            <button type="submit" className="generate-btn" disabled={loading}>
+              {loading ? "Generating..." : "Generate AI Itinerary"}
             </button>
           </form>
+          {error && <p className="planner-error">{error}</p>}
+          {warning && <p className="planner-warning">{warning}</p>}
         </div>
 
         {itinerary && (
           <div className="itinerary-section">
             <h2>Your Itinerary for {itinerary.destination}</h2>
-            <p className="trip-details">Budget: ₹{itinerary.budget} | Duration: {itinerary.duration} days</p>
-            
+            <p className="trip-details">
+              Budget: Rs {itinerary.budget} | Duration: {itinerary.durationDays} days | Estimated Cost: Rs{" "}
+              {itinerary.totalEstimatedCost}
+            </p>
+            <p className="itinerary-overview">{itinerary.overview}</p>
+
+            {Array.isArray(itinerary.budgetBreakdown) && itinerary.budgetBreakdown.length > 0 && (
+              <div className="budget-box">
+                <h3>Budget Breakdown</h3>
+                <ul>
+                  {itinerary.budgetBreakdown.map((item, index) => (
+                    <li key={`${item.category}-${index}`}>
+                      <span>{item.category}</span>
+                      <strong>Rs {item.amount}</strong>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             <div className="itinerary-days">
-              <div className="day-card">
-                <h3>Day 1</h3>
-                <ul>
-                  {itinerary.day1.map((item, index) => (
-                    <li key={index}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="day-card">
-                <h3>Day 2</h3>
-                <ul>
-                  {itinerary.day2.map((item, index) => (
-                    <li key={index}>{item}</li>
-                  ))}
-                </ul>
-              </div>
+              {itinerary.days?.map((day) => (
+                <div className="day-card" key={day.day}>
+                  <h3>
+                    Day {day.day}: {day.title}
+                  </h3>
+                  <p className="day-cost">Estimated: Rs {day.estimatedCost}</p>
+                  <h4>Activities</h4>
+                  <ul>
+                    {day.activities?.map((item, index) => (
+                      <li key={`${day.day}-act-${index}`}>{item}</li>
+                    ))}
+                  </ul>
+                  <h4>Food</h4>
+                  <ul>
+                    {day.foodPlan?.map((item, index) => (
+                      <li key={`${day.day}-food-${index}`}>{item}</li>
+                    ))}
+                  </ul>
+                  <p>
+                    <strong>Stay:</strong> {day.staySuggestion}
+                  </p>
+                  <p>
+                    <strong>Transport:</strong> {day.transportNote}
+                  </p>
+                </div>
+              ))}
             </div>
+
+            {Array.isArray(itinerary.tips) && itinerary.tips.length > 0 && (
+              <div className="tips-box">
+                <h3>Smart Tips</h3>
+                <ul>
+                  {itinerary.tips.map((tip, idx) => (
+                    <li key={`tip-${idx}`}>{tip}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         )}
       </div>

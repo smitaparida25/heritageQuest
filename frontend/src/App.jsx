@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Footer from "./pages/Footer";
 import Chatbot from "./pages/Chatbot";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -21,9 +22,30 @@ function App() {
         <Route path="/state/:id" element={<StateDetails />} />
         <Route path="/quiz/:id" element={<Quiz />} />
         <Route path="/explore/:id" element={<Explore />} />
-        <Route path="/trip-planner" element={<TripPlanner />} />
-        <Route path="/location" element={<LocationTracker />} />
-        <Route path="/guides" element={<Guides />} />
+        <Route
+          path="/trip-planner"
+          element={
+            <ProtectedRoute>
+              <TripPlanner />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/location"
+          element={
+            <ProtectedRoute>
+              <LocationTracker />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/guides"
+          element={
+            <ProtectedRoute>
+              <Guides />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>

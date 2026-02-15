@@ -38,7 +38,21 @@
   transition: color 0.3s;
 }
 
+.footer-link-btn {
+  color: rgba(255, 255, 255, 0.8);
+  background: transparent;
+  border: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.3s;
+}
+
 .footer-links a:hover {
+  color: white;
+}
+
+.footer-link-btn:hover {
   color: white;
 }
 
