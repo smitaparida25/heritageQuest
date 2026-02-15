@@ -7,6 +7,7 @@
   background-size: cover;
   background-position: center;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -17,11 +18,45 @@
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
 }
 
+.explore-btn {
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+}
+
 .map-section {
   padding: 3rem 2rem;
   text-align: center;
-  background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+  background-size: cover;
+  background-position: center;
   min-height: calc(30vh);
+  position: relative;
+  pointer-events: auto;
+}
+
+.map-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.map-section h2, .map-section p {
+  position: relative;
+  z-index: 1;
+  z-index: 5;
+}
+
+.cards-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 5;
 }
 
 .map-section h2 {
@@ -39,9 +74,11 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 1.5rem;
-  background: white;
+  background: transparent;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
 }
 
 .map-wrapper svg path {
@@ -98,7 +135,320 @@
   display: inline-block;
 }
 
+.cards-section {
+  position: absolute;
+  top: 80pc;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 800px;
+  text-align: center;
+  z-index: 10;
+}
+
+.cards-section h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.cards-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.heritage-card {
+  flex: 1;
+  min-width: 250px;
+  max-width: 350px;
+  padding: 2rem 1.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.heritage-card:hover {
+  transform: translateY(-8px);
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.heritage-card .card-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.heritage-card h3 {
+  font-size: 1.3rem;
+  color: #000;
+  margin-bottom: 0.75rem;
+}
+
+.heritage-card p {
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.close-btn {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  color: #000;
+}
+
+.close-btn:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.trip-planner-section {
+  padding: 15rem 2rem;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.trip-planner-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.trip-planner-content {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.trip-planner-text {
+  flex: 1;
+}
+
+.trip-planner-text h2 {
+  font-size: 2.5rem;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.trip-planner-text p {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1.5rem;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 2rem;
+}
+
+.feature-list li {
+  color: rgba(255, 255, 255, 0.85);
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.feature-list li::before {
+  content: "✓";
+  color: white;
+  position: absolute;
+  left: 0;
+}
+
+.trip-planner-btn {
+  font-size: 1.1rem;
+}
+
+.trip-planner-icon {
+  font-size: 8rem;
+}
+
+.guide-section {
+  padding: 12rem 2rem;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  min-height: 500px;
+}
+
+.guide-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.guide-content {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.guide-icon {
+  font-size: 8rem;
+}
+
+.guide-text {
+  flex: 1;
+}
+
+.guide-text h2 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.guide-text p {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.guide-features {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 2rem;
+}
+
+.guide-features li {
+  color: #555;
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.guide-features li::before {
+  content: "✓";
+  color: #667eea;
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+.guide-btn {
+  font-size: 1.1rem;
+}
+
+.fun-facts-section {
+  padding: 4rem 2rem;
+  background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+  text-align: center;
+}
+
+.fun-facts-section h2 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 3rem;
+}
+
+.facts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.fact-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.fact-card:hover {
+  transform: translateY(-5px);
+}
+
+.fact-card .fact-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.fact-card h3 {
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 0.75rem;
+}
+
+.fact-card p {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
 @media (max-width: 768px) {
+  .trip-planner-content {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+
+  .trip-planner-text h2 {
+    font-size: 1.8rem;
+  }
+
+  .trip-planner-icon {
+    font-size: 5rem;
+  }
+
+  .feature-list li {
+    text-align: left;
+  }
+
+  .guide-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .guide-icon {
+    font-size: 5rem;
+  }
+
+  .guide-text h2 {
+    font-size: 1.8rem;
+  }
+
+  .guide-features li {
+    text-align: left;
+  }
+
   .Heading {
     font-size: 2.5rem;
   }

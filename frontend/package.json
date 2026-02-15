@@ -11,8 +11,11 @@
   },
   "dependencies": {
     "@vishalvoid/react-india-map": "^1.2.0",
+    "leaflet": "^1.9.4",
+    "mongodb": "^7.1.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.13.0"
   },
   "devDependencies": {

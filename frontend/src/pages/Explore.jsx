@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import "./StateDetails.css";
+import "./Explore.css";
 
 const stateNames = {
   INAN: "Andaman and Nicobar", INAP: "Andhra Pradesh", INAR: "Arunachal Pradesh",
@@ -14,30 +14,30 @@ const stateNames = {
   INWB: "West Bengal"
 };
 
-const StateDetails = () => {
+const Explore = () => {
   const { id } = useParams();
   const stateName = stateNames[id] || "State";
 
   return (
-    <div className="state-details">
-      <div className="state-header">
-        <h1>{stateName}</h1>
-        <p>Explore heritage, culture, and traditions</p>
+    <div className="explore-page">
+      <div className="page-header">
+        <h1>Explore - {stateName}</h1>
+        <p>Discover culture, traditions, and heritage of {stateName}</p>
       </div>
-      <div className="cards-grid">
-        <div className="info-card">
-          <div className="card-icon">🏛️</div>
-          <h3>Quiz</h3>
-          <p>Discover historical monuments and cultural landmarks</p>
+      <div className="sections-container">
+        <div className="explore-section">
+          <div className="section-icon">🏛️</div>
+          <h2>Heritage Sites</h2>
+          <p>Explore historical monuments, temples, forts, and cultural landmarks of {stateName}.</p>
         </div>
-        <div className="info-card">
-          <div className="card-icon">📖</div>
-          <h3>Wordle</h3>
-          <p>Explore local myths, legends, and traditional stories</p>
+        <div className="explore-section">
+          <div className="section-icon">🎭</div>
+          <h2>Cultures & Traditions</h2>
+          <p>Discover local customs, festivals, folk dances, music, and traditional practices of {stateName}.</p>
         </div>
       </div>
     </div>
   );
 };
 
-export default StateDetails;
+export default Explore;

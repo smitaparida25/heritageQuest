@@ -1,0 +1,83 @@
+.state-details {
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.state-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem 0;
+}
+
+.state-header h1 {
+  font-size: 3rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.state-header p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.cards-grid {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.info-card {
+  flex: 1;
+  min-width: 280px;
+  max-width: 350px;
+  padding: 2.5rem 2rem;
+  background: white;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.info-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.info-card .card-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.info-card h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 0.75rem;
+}
+
+.info-card p {
+  color: #666;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .state-header h1 {
+    font-size: 2rem;
+  }
+
+  .state-header p {
+    font-size: 1rem;
+  }
+
+  .cards-grid {
+    padding: 0 1rem;
+  }
+
+  .info-card {
+    min-width: 100%;
+  }
+}

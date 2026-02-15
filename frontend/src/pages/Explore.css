@@ -1,0 +1,59 @@
+.explore-page {
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.sections-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.explore-section {
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.explore-section:hover {
+  transform: translateX(10px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.explore-section .section-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.explore-section h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 0.75rem;
+}
+
+.explore-section p {
+  color: #666;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .explore-section {
+    padding: 1.5rem;
+  }
+
+  .explore-section h2 {
+    font-size: 1.4rem;
+  }
+}
