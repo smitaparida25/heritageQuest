@@ -1,0 +1,117 @@
+.home-container {
+  min-height: 100vh;
+}
+
+.bg {
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Heading {
+  font-size: 4rem;
+  color: white;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.map-section {
+  padding: 3rem 2rem;
+  text-align: center;
+  background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+  min-height: calc(30vh);
+}
+
+.map-section h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.map-section p {
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.map-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.map-wrapper svg path {
+  fill: #88A4BC !important;
+}
+
+.map-wrapper svg path:nth-child(1) { fill: #E57373 !important; }
+.map-wrapper svg path:nth-child(2) { fill: #81C784 !important; }
+.map-wrapper svg path:nth-child(3) { fill: #64B5F6 !important; }
+.map-wrapper svg path:nth-child(4) { fill: #FFD54F !important; }
+.map-wrapper svg path:nth-child(5) { fill: #BA68C8 !important; }
+.map-wrapper svg path:nth-child(6) { fill: #4DB6AC !important; }
+.map-wrapper svg path:nth-child(7) { fill: #FF8A65 !important; }
+.map-wrapper svg path:nth-child(8) { fill: #A1887F !important; }
+.map-wrapper svg path:nth-child(9) { fill: #90A4AE !important; }
+.map-wrapper svg path:nth-child(10) { fill: #F06292 !important; }
+.map-wrapper svg path:nth-child(11) { fill: #AED581 !important; }
+.map-wrapper svg path:nth-child(12) { fill: #4FC3F7 !important; }
+.map-wrapper svg path:nth-child(13) { fill: #FFE082 !important; }
+.map-wrapper svg path:nth-child(14) { fill: #B39DDB !important; }
+.map-wrapper svg path:nth-child(15) { fill: #80CBC4 !important; }
+.map-wrapper svg path:nth-child(16) { fill: #FFB74D !important; }
+.map-wrapper svg path:nth-child(17) { fill: #C5E1A5 !important; }
+.map-wrapper svg path:nth-child(18) { fill: #90CAF9 !important; }
+.map-wrapper svg path:nth-child(19) { fill: #FFCC80 !important; }
+.map-wrapper svg path:nth-child(20) { fill: #CE93D8 !important; }
+.map-wrapper svg path:nth-child(21) { fill: #80DEEA !important; }
+.map-wrapper svg path:nth-child(22) { fill: #FFAB91 !important; }
+.map-wrapper svg path:nth-child(23) { fill: #BCAAA4 !important; }
+.map-wrapper svg path:nth-child(24) { fill: #B0BEC5 !important; }
+.map-wrapper svg path:nth-child(25) { fill: #EF9A9A !important; }
+.map-wrapper svg path:nth-child(26) { fill: #C5E1A5 !important; }
+.map-wrapper svg path:nth-child(27) { fill: #81D4FA !important; }
+.map-wrapper svg path:nth-child(28) { fill: #FFE0B2 !important; }
+.map-wrapper svg path:nth-child(29) { fill: #D1C4E9 !important; }
+.map-wrapper svg path:nth-child(30) { fill: #B2DFDB !important; }
+.map-wrapper svg path:nth-child(31) { fill: #FFAB40 !important; }
+.map-wrapper svg path:nth-child(32) { fill: #DCEDC8 !important; }
+.map-wrapper svg path:nth-child(33) { fill: #B3E5FC !important; }
+.map-wrapper svg path:nth-child(34) { fill: #FFECB3 !important; }
+.map-wrapper svg path:nth-child(35) { fill: #E1BEE7 !important; }
+.map-wrapper svg path:nth-child(36) { fill: #B2EBF2 !important; }
+
+.map-wrapper svg path:hover {
+  fill: #3B729F !important;
+}
+
+.state-tooltip {
+  margin-top: 1rem;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+@media (max-width: 768px) {
+  .Heading {
+    font-size: 2.5rem;
+  }
+
+  .bg {
+    height: 50vh;
+  }
+
+  .map-section {
+    padding: 2rem 1rem;
+  }
+
+  .map-section h2 {
+    font-size: 1.5rem;
+  }
+}
