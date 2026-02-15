@@ -1,0 +1,103 @@
+.guides-page {
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.guides-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.guides-header h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.guides-header p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.guides-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.guide-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.guide-card:hover {
+  transform: translateY(-5px);
+}
+
+.guide-image {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+  text-align: center;
+  font-size: 4rem;
+}
+
+.guide-info {
+  padding: 1.5rem;
+}
+
+.guide-info h3 {
+  font-size: 1.4rem;
+  color: #333;
+  margin-bottom: 0.75rem;
+}
+
+.guide-location, .guide-experience, .guide-specialty {
+  color: #555;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.guide-languages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.language-tag {
+  background: #f0f0f0;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+
+.guide-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.guide-rating {
+  font-weight: bold;
+  color: #f39c12;
+}
+
+.guide-price {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #667eea;
+}
+
+.contact-btn {
+  width: 100%;
+  margin-top: 0.5rem;
+}

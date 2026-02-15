@@ -120,12 +120,10 @@ const Home = () => {
               Start Planning
             </button>
           </div>
-          <div className="trip-planner-icon">🧳</div>
         </div>
       </div>
       <div className="guide-section" style={{ backgroundImage: `url(${guideBg})` }}>
         <div className="guide-content">
-          <div className="guide-icon">🎤</div>
           <div className="guide-text">
             <h2>Connect with Local Guides</h2>
             <p>Get authentic travel experiences with knowledgeable local guides who know the hidden gems of India</p>
