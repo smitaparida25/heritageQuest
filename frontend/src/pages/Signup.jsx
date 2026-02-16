@@ -10,6 +10,7 @@ const Signup = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "customer",
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -34,7 +35,7 @@ const Signup = () => {
 
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/auth/register", {
+      const response = await fetch("http://localhost:5001/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -43,6 +44,7 @@ const Signup = () => {
           name: formData.name,
           email: formData.email,
           password: formData.password,
+          role: formData.role,
         }),
       });
 
@@ -109,6 +111,31 @@ const Signup = () => {
               value={formData.confirmPassword}
               onChange={handleChange}
             />
+          </div>
+          <div className="form-group">
+            <label>I am a:</label>
+            <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                <input
+                  type="radio"
+                  name="role"
+                  value="customer"
+                  checked={formData.role === "customer"}
+                  onChange={handleChange}
+                />
+                Tourist
+              </label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                <input
+                  type="radio"
+                  name="role"
+                  value="guide"
+                  checked={formData.role === "guide"}
+                  onChange={handleChange}
+                />
+                Guide
+              </label>
+            </div>
           </div>
           <button type="submit" className="auth-btn" disabled={loading}>
             {loading ? "Creating account..." : "Sign Up"}

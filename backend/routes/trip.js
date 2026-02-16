@@ -1,5 +1,4 @@
 import express from "express";
-import protect from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -120,15 +119,8 @@ Return ONLY valid JSON in this exact shape:
 `;
 };
 
-router.post("/plan", protect, async (req, res) => {
+router.post("/plan", async (req, res) => {
   try {
-    const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-    const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-4.1-mini";
-
-    if (!OPENAI_API_KEY) {
-      return res.status(500).json({ message: "OPENAI_API_KEY is missing in backend .env" });
-    }
-
     const { destination, budget, duration, interests, travelers, pace } = req.body;
     const normalizedInput = {
       destination: destination?.trim() || "",
@@ -145,83 +137,14 @@ router.post("/plan", protect, async (req, res) => {
         .json({ message: "destination, budget, and duration are required" });
     }
 
-    const payload = {
-      model: OPENAI_MODEL,
-      input: buildPrompt({
-        destination: normalizedInput.destination,
-        budget: normalizedInput.budget,
-        duration: normalizedInput.duration,
-        interests: normalizedInput.interests,
-        travelers: normalizedInput.travelers,
-        pace: normalizedInput.pace,
-      }),
-      max_output_tokens: 1400,
-    };
-
-    const aiResponse = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify(payload),
+    const itinerary = buildFallbackItinerary(normalizedInput);
+    return res.json({
+      itinerary,
+      warning: "Showing a smart budget fallback plan.",
+      source: "fallback",
     });
-
-    if (!aiResponse.ok) {
-      const errorText = await aiResponse.text();
-      let parsedError;
-      try {
-        parsedError = JSON.parse(errorText);
-      } catch {
-        parsedError = null;
-      }
-
-      const errorCode = parsedError?.error?.code || "";
-      const shouldFallback =
-        errorCode === "insufficient_quota" ||
-        errorCode === "invalid_api_key" ||
-        aiResponse.status >= 500;
-
-      if (shouldFallback) {
-        const itinerary = buildFallbackItinerary(normalizedInput);
-        return res.json({
-          itinerary,
-          warning:
-            "AI service is temporarily unavailable for this account. Showing a smart budget fallback plan.",
-          source: "fallback",
-        });
-      }
-
-      return res.status(502).json({ message: "OpenAI request failed", error: errorText });
-    }
-
-    const result = await aiResponse.json();
-    const outputText = result.output_text?.trim();
-
-    if (!outputText) {
-      const itinerary = buildFallbackItinerary(normalizedInput);
-      return res.json({
-        itinerary,
-        warning: "AI returned an empty response. Showing a smart fallback plan.",
-        source: "fallback",
-      });
-    }
-
-    let itinerary;
-    try {
-      itinerary = JSON.parse(outputText);
-    } catch {
-      const fallbackItinerary = buildFallbackItinerary(normalizedInput);
-      return res.json({
-        itinerary: fallbackItinerary,
-        warning: "AI response format was invalid. Showing a smart fallback plan.",
-        source: "fallback",
-      });
-    }
-
-    return res.json({ itinerary, source: "openai" });
   } catch (error) {
-    return res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 });
 

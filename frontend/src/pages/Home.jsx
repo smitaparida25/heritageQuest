@@ -1,30 +1,57 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useCallback, useMemo, useEffect, useRef } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { IndiaMap } from "@vishalvoid/react-india-map";
 import bg from "../assets/bg.jpg";
 import plannerBg from "../assets/planner bg.jpg";
 import mapBg from "../assets/map bg.jpeg";
 import guideBg from "../assets/guide bg.jpg";
+import funfactBg from "../assets/Funfact bg.jpg";
 import "./Home.css";
+import { getAuth, clearAuth } from "../utils/auth";
 
 const Home = () => {
   const navigate = useNavigate();
   const [selectedState, setSelectedState] = useState(null);
   const [hoveredState, setHoveredState] = useState(null);
+  const [auth, setAuth] = useState(null);
+  const hoverTimeoutRef = useRef(null);
 
-  const mapStyle = {
-    backgroundColor: "#ffffff",
-    defaultColor: "#88A4BC",
-    hoverColor: "#3B729F",
+  useEffect(() => {
+    setAuth(getAuth());
+  }, []);
+
+  const handleLogout = () => {
+    clearAuth();
+    setAuth(null);
+    navigate("/");
+  };
+
+  const handleStateHover = useCallback((state) => {
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    hoverTimeoutRef.current = setTimeout(() => {
+      setHoveredState(state);
+    }, 50);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    };
+  }, []);
+
+  const mapStyle = useMemo(() => ({
+    backgroundColor: "#7B473A",
+    defaultColor: "#B8956E",
+    hoverColor: "#E8C547",
     stroke: "#ffffff",
     strokeWidth: 1,
     tooltipConfig: {
       backgroundColor: "rgba(0, 0, 0, 0.8)",
       textColor: "#ffffff",
     },
-  };
+  }), []);
 
-  const stateCodeMap = {
+  const stateCodeMap = useMemo(() => ({
     "IN-AN": "INAN", "IN-AP": "INAP", "IN-AR": "INAR", "IN-AS": "INAS",
     "IN-BR": "INBR", "IN-CT": "INCT", "IN-GA": "INGA", "IN-GJ": "INGJ",
     "IN-HP": "INHP", "IN-HR": "INHR", "IN-JH": "INJH", "IN-JK": "INJK",
@@ -34,9 +61,9 @@ const Home = () => {
     "IN-PY": "INPY", "IN-RJ": "INRJ", "IN-SK": "INSK", "IN-TG": "INTG",
     "IN-TN": "INTN", "IN-TR": "INTR", "IN-UP": "INUP", "IN-UT": "INUT",
     "IN-WB": "INWB", "IN-DL": "INDL", "IN-CH": "INCH", "IN-DN": "INDH",
-  };
+  }), []);
 
-  const stateNames = {
+  const stateNames = useMemo(() => ({
     INAN: "Andaman and Nicobar", INAP: "Andhra Pradesh", INAR: "Arunachal Pradesh",
     INAS: "Assam", INBR: "Bihar", INCH: "Chandigarh", INCT: "Chhattisgarh",
     INDH: "Dadra and Nagar Haveli", INDL: "Delhi", INGA: "Goa", INGJ: "Gujarat",
@@ -47,15 +74,29 @@ const Home = () => {
     INPY: "Puducherry", INRJ: "Rajasthan", INSK: "Sikkim", INTG: "Telangana",
     INTN: "Tamil Nadu", INTR: "Tripura", INUP: "Uttar Pradesh", INUT: "Uttarakhand",
     INWB: "West Bengal"
-  };
+  }), []);
 
-  const handleStateClick = (stateId) => {
+  const handleStateClick = useCallback((stateId) => {
     const mappedState = stateCodeMap[stateId] || stateId;
     setSelectedState(mappedState);
-  };
+  }, [stateCodeMap]);
 
   return (
     <div className="home-container">
+      <div className="top-nav" style={{ position: 'absolute', top: 0, left: 0, right: 0, padding: '1rem 2rem', display: 'flex', justifyContent: 'flex-end', gap: '1rem', zIndex: 100 }}>
+        {auth?.user ? (
+          <>
+            <span style={{ color: '#fff', alignSelf: 'center', fontWeight: '500' }}>Welcome, {auth.user.name}!</span>
+            <Link to="/guide-dashboard" style={{ padding: '0.5rem 1.5rem', background: '#e8b931', color: '#333', textDecoration: 'none', borderRadius: '5px', fontWeight: '500' }}>My Dashboard</Link>
+            <button onClick={handleLogout} style={{ padding: '0.5rem 1.5rem', background: '#dc3545', color: '#fff', border: 'none', borderRadius: '5px', fontWeight: '500', cursor: 'pointer' }}>Logout</button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" style={{ padding: '0.5rem 1.5rem', background: '#3B729F', color: '#fff', textDecoration: 'none', borderRadius: '5px', fontWeight: '500' }}>Login</Link>
+            <Link to="/signup" style={{ padding: '0.5rem 1.5rem', background: '#e8b931', color: '#333', textDecoration: 'none', borderRadius: '5px', fontWeight: '500' }}>Sign Up</Link>
+          </>
+        )}
+      </div>
       <div
         className="bg"
         style={{ backgroundImage: `url(${bg})` }}
@@ -65,14 +106,14 @@ const Home = () => {
           Explore Now
         </button>
       </div>
-      <div className="map-section" id="map-section" style={{ backgroundImage: `url(${mapBg})` }}>
+      <div className="map-section" id="map-section">
         <h2>Explore Indian Heritage</h2>
         <p>Select a state to discover its cultural heritage sites</p>
         <div className="map-wrapper">
           <IndiaMap
             mapStyle={mapStyle}
             onStateClick={handleStateClick}
-            onStateHover={setHoveredState}
+            onStateHover={handleStateHover}
           />
         </div>
         {hoveredState && !selectedState && (
@@ -133,11 +174,11 @@ const Home = () => {
               <li>Authentic cultural experiences</li>
               <li>24/7 support during your trip</li>
             </ul>
-            <button className="guide-btn">Find a Guide</button>
+            <Link to="/guides"><button className="guide-btn">Find a Guide</button></Link>
           </div>
         </div>
       </div>
-      <div className="fun-facts-section">
+      <div className="fun-facts-section" style={{ backgroundImage: `linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.6)), url(${funfactBg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <h2>Fun Facts About India</h2>
         <div className="facts-grid">
           <div className="fact-card">

@@ -28,18 +28,10 @@ const TripPlanner = () => {
     setLoading(true);
 
     try {
-      const auth = getAuth();
-
-      if (!auth?.token) {
-        setError("Please login first to generate an AI itinerary.");
-        return;
-      }
-
-      const response = await fetch("http://localhost:5000/api/trip/plan", {
+      const response = await fetch("http://localhost:5001/api/trip/plan", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.token}`,
         },
         body: JSON.stringify(formData),
       });
