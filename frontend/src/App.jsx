@@ -7,6 +7,8 @@ import Explore from "./pages/Explore";
 import TripPlanner from "./pages/TripPlanner";
 import LocationTracker from "./pages/LocationTracker";
 import Guides from "./pages/Guides";
+import GuideDashboard from "./pages/GuideDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Footer from "./pages/Footer";
@@ -38,14 +40,9 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/guides"
-          element={
-            <ProtectedRoute>
-              <Guides />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/guides" element={<Guides />} />
+        <Route path="/guide-dashboard" element={<GuideDashboard />} />
+        <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>
