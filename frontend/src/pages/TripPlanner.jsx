@@ -35,7 +35,7 @@ const TripPlanner = () => {
         return;
       }
 
-      const response = await fetch("http://localhost:5000/api/trip/plan", {
+      const response = await fetch("http://localhost:5001/api/trip/plan", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -88,7 +88,7 @@ const TripPlanner = () => {
               <input
                 type="number"
                 name="budget"
-                placeholder="e.g., 50000"
+                placeholder="e.g., 50010"
                 value={formData.budget}
                 onChange={handleChange}
                 required
