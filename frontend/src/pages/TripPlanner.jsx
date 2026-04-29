@@ -35,7 +35,7 @@ const TripPlanner = () => {
         return;
       }
 
-      const response = await fetch("http://localhost:5001/api/trip/plan", {
+      const response = await fetch("/api/trip/plan", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
