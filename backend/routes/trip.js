@@ -123,7 +123,7 @@ Return ONLY valid JSON in this exact shape:
 router.post("/plan", protect, async (req, res) => {
   try {
     const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-    const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-4.1-mini";
+    const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-3.5-turbo";
 
     if (!OPENAI_API_KEY) {
       return res.status(500).json({ message: "OPENAI_API_KEY is missing in backend .env" });
@@ -147,18 +147,24 @@ router.post("/plan", protect, async (req, res) => {
 
     const payload = {
       model: OPENAI_MODEL,
-      input: buildPrompt({
-        destination: normalizedInput.destination,
-        budget: normalizedInput.budget,
-        duration: normalizedInput.duration,
-        interests: normalizedInput.interests,
-        travelers: normalizedInput.travelers,
-        pace: normalizedInput.pace,
-      }),
-      max_output_tokens: 1400,
+      messages: [
+        {
+          role: "user",
+          content: buildPrompt({
+            destination: normalizedInput.destination,
+            budget: normalizedInput.budget,
+            duration: normalizedInput.duration,
+            interests: normalizedInput.interests,
+            travelers: normalizedInput.travelers,
+            pace: normalizedInput.pace,
+          }),
+        },
+      ],
+      max_tokens: 1400,
+      response_format: { type: "json_object" },
     };
 
-    const aiResponse = await fetch("https://api.openai.com/v1/responses", {
+    const aiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -169,6 +175,7 @@ router.post("/plan", protect, async (req, res) => {
 
     if (!aiResponse.ok) {
       const errorText = await aiResponse.text();
+      console.error("OpenAI API Error:", aiResponse.status, errorText);
       let parsedError;
       try {
         parsedError = JSON.parse(errorText);
@@ -187,7 +194,7 @@ router.post("/plan", protect, async (req, res) => {
         return res.json({
           itinerary,
           warning:
-            "AI service is temporarily unavailable for this account. Showing a smart budget fallback plan.",
+            "AI service is temporarily unavailable. Showing a smart budget fallback plan.",
           source: "fallback",
         });
       }
@@ -196,9 +203,8 @@ router.post("/plan", protect, async (req, res) => {
     }
 
     const result = await aiResponse.json();
-    const outputText = result.output_text?.trim();
-
-    if (!outputText) {
+    
+    if (!result.choices || !result.choices[0]?.message?.content) {
       const itinerary = buildFallbackItinerary(normalizedInput);
       return res.json({
         itinerary,
@@ -207,6 +213,7 @@ router.post("/plan", protect, async (req, res) => {
       });
     }
 
+    const outputText = result.choices[0].message.content.trim();
     let itinerary;
     try {
       itinerary = JSON.parse(outputText);
