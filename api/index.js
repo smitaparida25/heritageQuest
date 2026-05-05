@@ -40,4 +40,7 @@ app.get("/api", (req, res) => {
   res.send("HeritageQuest API running");
 });
 
-export default app;
+export default async function handler(req, res) {
+  await connectDB();
+  return app(req, res);
+}

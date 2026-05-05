@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
-import { saveAuth } from "../utils/auth";
+import { saveAuth, apiFetch } from "../utils/auth";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const Signup = () => {
 
     setLoading(true);
     try {
-      const response = await fetch("/api/auth/register", {
+      const response = await apiFetch("/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

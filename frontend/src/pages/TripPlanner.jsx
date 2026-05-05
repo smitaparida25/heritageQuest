@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./TripPlanner.css";
-import { getAuth } from "../utils/auth";
+import { getAuth, apiFetch } from "../utils/auth";
 
 const TripPlanner = () => {
   const [formData, setFormData] = useState({
@@ -35,7 +35,7 @@ const TripPlanner = () => {
         return;
       }
 
-      const response = await fetch("/api/trip/plan", {
+      const response = await apiFetch("/api/trip/plan", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
