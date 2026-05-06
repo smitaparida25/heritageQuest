@@ -14,8 +14,8 @@ app.use(express.json());
 
 connectDB();
 
-app.use("/api/auth", authRoutes);
-app.use("/api/trip", tripRoutes);
+app.use("/auth", authRoutes);
+app.use("/trip", tripRoutes);
 
 app.get("/", (req, res) => {
   res.send("HeritageQuest API running");
